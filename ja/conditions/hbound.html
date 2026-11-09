@@ -1,0 +1,2118 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="3D Open Channel Flow Solver for iRIC - User Manual">
+      
+      
+        <meta name="author" content="FreeBird Development Team">
+      
+      
+        <link rel="canonical" href="https://iricsolvers.github.io/Freebird-manual/ja/conditions/hbound.html">
+      
+      
+        <link rel="prev" href="turbulence.html">
+      
+      
+        <link rel="next" href="ibcond.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>水理量の初期・境界条件 - FreeBird User Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../../index.html" title="FreeBird User Manual" class="md-header__button md-logo" aria-label="FreeBird User Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FreeBird User Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              水理量の初期・境界条件
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  言語選択 / Language
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../index.html" class="md-tabs__link">
+          
+  
+  
+  日本語ガイド
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../en/index.html" class="md-tabs__link">
+          
+  
+  
+  English Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="FreeBird User Manual" class="md-nav__button md-logo" aria-label="FreeBird User Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FreeBird User Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    言語選択 / Language
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    日本語ガイド
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    日本語ガイド
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ホーム
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    計算の流れ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grid.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    格子と格子の属性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../obstacle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    障害物セル (Obstacle Cell)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    計算条件
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    計算条件
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    計算条件の一覧
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="basic.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    計算領域および計算上の各種パラメータ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="turbulence.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    乱流モデル
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    水理量の初期・境界条件
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="hbound.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    水理量の初期・境界条件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        主な設定の考え方
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        項目一覧
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="項目一覧">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        上流の流量条件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        流量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        西側/上流側境界(i=1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ini" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        東側/下流側境界条件(i=ni)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        下流水位の変動値
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        南側境界の水面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        北側境界の水面
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        初期水面条件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ibcond.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    濃度の初期・境界条件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="roughness.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    河床粗度と側壁摩擦
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="wind.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    吹送流
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sediment.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    土砂輸送と河床変動
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="time.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    時間と繰り返し計算に関するパラメータ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="artdiff.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    人工粘性
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="physical.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    物理パラメータ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="drawing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    壁およびカルバートの描画
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    境界条件
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    境界条件
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boundary/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    境界条件の一覧
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boundary/inflow_outflow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    流入・流出・流量検査断面
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boundary/walls.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    壁（カルバート穴の追加可）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    構造物BC (Structure)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../culvert.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    構造物カルバート (Structure Culvert)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boundary/terrain_obstacle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    地形を越流可能な障害物に変換
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    計算結果の表示
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    計算結果の表示
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postprocess/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    計算結果の表示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postprocess/view2d.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2次元の結果の表示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postprocess/view3d.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3次元の結果の表示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postprocess/graph.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    時間変化のグラフ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postprocess/outputs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    出力される計算結果
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    応用
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    応用
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../surface_drag.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    水面抵抗と鉛直格子
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    English Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    English Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../en/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../en/obstacle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Obstacle Cell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../en/structure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structure BC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../en/culvert.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structure Culvert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../en/surface_drag.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Water Surface Drag and Vertical Grid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">水理量の初期・境界条件<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p><em>対応バージョン: 2.0.20261007</em></p>
+<p>ソルバータイプが「単一流入・単一流出」のときに、上流端の流量・水位、下流端の水位、左右岸側を開放とした場合の水位を設定するタブです。計算開始時の水面（初期水面）もここで設定します。「複合河川条件」では、初期水面以外の項目は使われず、流入・流出は<a href="../boundary/index.html">境界条件</a>で設定します。</p>
+<p><img alt="「水理量の初期・境界条件」タブ（単一流入・単一流出、流量一定、下流水位一定、初期水面等勾配）" src="../../images/ja/cond_hbound.png" /></p>
+<h2 id="_2">主な設定の考え方<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>上流端の流量</strong>：計算開始直後に大きな流量を急に与えると不安定になるため、「流量調整の開始時間」から「目標流量に達するまでの時間」をかけて徐々に流量を増やします。</li>
+<li><strong>上流端の水面条件</strong>：初期に水がある場合は「上流端で水面勾配を与える」、ドライから始める場合や上流端の流れを安定させたい場合は「与えられた勾配を用いた等流計算」や「Riemann不変量条件」が向いています。</li>
+<li><strong>下流端の水面条件</strong>：下流端の水位が分かっている場合は「一定」や「時系列データ入力」、分からない場合は「水平」「一定勾配」「等流」で内部の水位から決めます。</li>
+<li><strong>初期水面</strong>：「ドライ条件」から始めると、流入した水が河道を満たすまでの時間が必要です。等流に近い状態から始めたい場合は「等勾配」を使うと早く落ち着きます。</li>
+</ul>
+<h2 id="_3">項目一覧<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<!-- このファイルは manual/tools/gen_params.py が definition.xml から作成します。直接編集しないでください。 -->
+
+<h3 id="_4">上流の流量条件<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_5">流量<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>流量<br><small><code>j_qin</code></small></td>
+<td>上流端から流入させる流量の与え方です。「自由」は流量を指定しません。「一定」は一定流量を、「流量ハイドログラフ入力」は時系列を与えます。<br>選択肢: 自由／一定／流量ハイドログラフ入力<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>一定</td>
+</tr>
+<tr>
+<td>一定流量の値（m**3/s）<br><small><code>q_up_const</code></small></td>
+<td>上流端の一定流量（m³/s）です。<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「流量」が「一定」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.01</td>
+</tr>
+<tr>
+<td>流量ハイドログラフ<br><small><code>q_hyd</code></small></td>
+<td>上流端の流量の時系列（時刻と流量）です。<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「流量」≧2 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>—</td>
+</tr>
+<tr>
+<td>流量調整の開始時間（秒）<br><small><code>q_stt</code></small></td>
+<td>流量の調整を始める時刻（秒）です。この時刻から目標の流量へ向けて流量を増やします。<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「流量」≧1 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0</td>
+</tr>
+<tr>
+<td>目標流量に達するまでの時間（秒）<br><small><code>q_trn</code></small></td>
+<td>流量が目標値に達するまでの時間（秒）です。計算開始直後に急に大流量を与えると不安定になるため、徐々に流量を増やします。<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「流量」≧1 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i1">西側/上流側境界(i=1)<a class="headerlink" href="#i1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水面条件<br><small><code>j_hup</code></small></td>
+<td>上流端の水位（と流入流速）の与え方です。「一定」は水位を固定します。「上流端で水面勾配を与える」は内部の水位と指定した水面勾配から上流端の水位を決めます。 「与えられた勾配を用いた等流計算」は指定した勾配での等流水深を与えます。「Riemann不変量条件」は、内部のRiemann不変量と指定流量から上流端の水深を求め、射流になった場合は等流計算に切り替えます。<br>選択肢: 一定／上流端で水面勾配を与える／与えられた勾配を用いた等流計算／Riemann不変量条件（内部Riemann不変量から水深平均流速を算定し、鉛直分布は対数則）<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>上流端で水面勾配を与える</td>
+</tr>
+<tr>
+<td>水位（m）<br><small><code>h_up_const</code></small></td>
+<td>上流端の水位を一定とする場合の水位（m）です。<br><small>表示される条件: (「西/上流境界(i=1)」が「開放」 かつ 「水面条件」が「一定」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>流入速度のための西／上流水面勾配<br><small><code>up_slope</code></small></td>
+<td>上流端の水位・流入流速を決めるための水面勾配です。<br><small>表示される条件: (「西/上流境界(i=1)」≧2 かつ 「水面条件」≧2 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.001</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ini">東側/下流側境界条件(i=ni)<a class="headerlink" href="#ini" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水面条件<br><small><code>j_hdw</code></small></td>
+<td>下流端の水位の与え方です。「一定」、水面を水平に外挿する「水平（dH/dx=0）」、「正弦波変動」、「時系列データ入力」、「一定勾配」、指定勾配での「等流」から選びます。<br>選択肢: 一定／水平（dH/dx=0）／正弦波変動／時系列データ入力／一定勾配／等流<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>一定</td>
+</tr>
+<tr>
+<td>下流側境界水面高の緩和係数<br><small><code>alphaDw</code></small></td>
+<td>下流端の水位を内部の値に追従させるときの緩和係数です。1 で内部の値をそのまま使い、小さいほどゆっくり追従します。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ (「水面条件」が「水平（dH/dx=0）」 または 「水面条件」が「一定勾配」))</small></td>
+<td>1.00</td>
+</tr>
+<tr>
+<td>下流（東側）の水位（m）<br><small><code>h_dw_const</code></small></td>
+<td>下流端の一定水位（m）です。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「水面条件」が「一定」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>東／下流水面勾配<br><small><code>h_dw_slope</code></small></td>
+<td>下流端の水面勾配です。「一定勾配」「等流」のときに使います。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ (「水面条件」が「一定勾配」 または 「水面条件」が「等流」) かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_6">下流水位の変動値<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>振幅（m）<br><small><code>hd_amp</code></small></td>
+<td>下流端の水位を正弦波で変動させるときの振幅（m）です。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「水面条件」が「正弦波変動」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>周期（秒）<br><small><code>hd_wl</code></small></td>
+<td>正弦波変動の周期（秒）です。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「水面条件」が「正弦波変動」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>変動の開始時間（秒）<br><small><code>hd_st</code></small></td>
+<td>正弦波変動を始める時刻（秒）です。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「水面条件」が「正弦波変動」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>全振幅に達するまでの時間（秒）<br><small><code>hd_ap</code></small></td>
+<td>変動を始めてから、振幅が設定値に達するまでの時間（秒）です。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「水面条件」が「正弦波変動」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>下流水位の時系列<br><small><code>h_hyd</code></small></td>
+<td>下流端の水位の時系列（時刻と水位）です。<br><small>表示される条件: (「東/下流境界(i=ni)」が「開放」 かつ 「水面条件」が「時系列データ入力」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_7">南側境界の水面<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水面条件<br><small><code>jh_south</code></small></td>
+<td>南側（j=1）の境界を開放とした場合の水位の与え方です。<br>選択肢: 一定標高／水平（dH/dy=0）／一定勾配<br><small>表示される条件: (「南/右岸側境界(j=1)」が「開放」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>一定標高</td>
+</tr>
+<tr>
+<td>南側の水位（m）<br><small><code>h_south</code></small></td>
+<td>南側境界の一定水位（m）です。<br><small>表示される条件: (「南/右岸側境界(j=1)」が「開放」 かつ 「水面条件」が「一定標高」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>南側の水面勾配<br><small><code>sSouth</code></small></td>
+<td>南側境界の水面勾配です。<br><small>表示される条件: (「南/右岸側境界(j=1)」が「開放」 かつ 「水面条件」が「一定勾配」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_8">北側境界の水面<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水面条件<br><small><code>jh_north</code></small></td>
+<td>北側（j=nj）の境界を開放とした場合の水位の与え方です。<br>選択肢: 一定標高／水平（dH/dy=0）／一定勾配<br><small>表示される条件: (「北/左岸側境界(j=nj)」が「開放」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>一定標高</td>
+</tr>
+<tr>
+<td>北側の水位（m）<br><small><code>h_north</code></small></td>
+<td>北側境界の一定水位（m）です。<br><small>表示される条件: (「北/左岸側境界(j=nj)」が「開放」 かつ 「水面条件」が「一定標高」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>北側の水面勾配<br><small><code>sNorth</code></small></td>
+<td>北側境界の水面勾配です。<br><small>表示される条件: (「北/左岸側境界(j=nj)」が「開放」 かつ 「水面条件」が「一定勾配」 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>北側の最大水位<br><small><code>hNorthMax</code></small></td>
+<td>北側境界の水位の上限（m）です。水位がこれを超えないように制限します。<br><small>表示される条件: (「北/左岸側境界(j=nj)」が「開放」 かつ 「水面条件」≧2 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>北側の最小水位<br><small><code>hNorthMin</code></small></td>
+<td>北側境界の水位の下限（m）です。<br><small>表示される条件: (「北/左岸側境界(j=nj)」が「開放」 かつ 「水面条件」≧2 かつ 「ソルバータイプ」が「単一流入・単一流出」)</small></td>
+<td>-1.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_9">初期水面条件<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>既定値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初期水面形状<br><small><code>j_hinit</code></small></td>
+<td>計算開始時の水面の与え方です。「水平方向に一定」「等勾配」、格子の属性「水位」から読み込む「幾何データから読み込み」、水のない状態から始める「ドライ条件」から選びます。<br>選択肢: 水平方向に一定／等勾配／幾何データ（CGNSファイル）から読み込み／ドライ条件(水深ゼロ)</td>
+<td>ドライ条件(水深ゼロ)</td>
+</tr>
+<tr>
+<td>水平一定の初期水位（m）<br><small><code>h_horizontal</code></small></td>
+<td>初期水面を水平とする場合の水位（m）です。<br><small>表示される条件: 「初期水面形状」が「水平方向に一定」</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>下流端の初期水位（m）<br><small><code>h_downstream</code></small></td>
+<td>初期水面を等勾配とする場合の、下流端の水位（m）です。<br><small>表示される条件: 「初期水面形状」が「等勾配」</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>初期水面勾配<br><small><code>initial_h_slope</code></small></td>
+<td>初期水面を等勾配とする場合の水面勾配です。<br><small>表示される条件: 「初期水面形状」が「等勾配」</small></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>初期水面データの読込点<br><small><code>j_wse_loc</code></small></td>
+<td>初期水位を、節点（ノード）の値とセル中心の値のどちらから読み込むかを選びます。格子の属性「水位」または「水位_cell」に対応します。<br>選択肢: 節点(ノード)／セル中心<br><small>表示される条件: 「初期水面形状」が「幾何データ（CGNSファイル）から読み込み」</small></td>
+<td>セル中心</td>
+</tr>
+</tbody>
+</table>
+<p><a href="index.html">計算条件の一覧へ戻る</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "toc.integrate", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
